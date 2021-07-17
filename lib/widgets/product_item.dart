@@ -47,6 +47,19 @@ class ProductItem extends StatelessWidget {
                 product.title,
                 product.price,
               );
+              Scaffold.of(context).hideCurrentSnackBar();
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Added Item to Cart',
+                  ),
+                  duration: Duration(seconds: 2),
+                  action: SnackBarAction(
+                    label: 'UNDO',
+                    onPressed: () => cart.removeSingleItem(product.id),
+                  ),
+                ),
+              );
             },
             icon: Icon(
               Icons.shopping_cart,
