@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myshop/providers/cart.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/cart.dart';
 
 class CartItem extends StatelessWidget {
   final String id;
@@ -21,46 +22,48 @@ class CartItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dismissible(
       key: ValueKey(id),
-      onDismissed: (direction) {
-        Provider.of<Cart>(context, listen: false).removeItem(productId);
-      },
       background: Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 4,
-        ),
         color: Theme.of(context).errorColor,
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.all(20),
         child: Icon(
           Icons.delete,
           color: Colors.white,
           size: 40,
+        ),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 20),
+        margin: EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 4,
         ),
       ),
       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) {
         return showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-              title: Text('Delete the Product ?'),
-              content: Text(
-                  'Are you sure you want to remove this product from cart ??'),
-              actions: [
-                FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                  child: Text('Yes'),
+          builder: (ctx) => AlertDialog(
+                title: Text('Are you sure?'),
+                content: Text(
+                  'Do you want to remove the item from the cart?',
                 ),
-                FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  child: Text('No'),
-                ),
-              ]),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('No'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop(false);
+                    },
+                  ),
+                  FlatButton(
+                    child: Text('Yes'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop(true);
+                    },
+                  ),
+                ],
+              ),
         );
+      },
+      onDismissed: (direction) {
+        Provider.of<Cart>(context, listen: false).removeItem(productId);
       },
       child: Card(
         margin: EdgeInsets.symmetric(
@@ -71,16 +74,16 @@ class CartItem extends StatelessWidget {
           padding: EdgeInsets.all(8),
           child: ListTile(
             leading: CircleAvatar(
-              child: FittedBox(
-                child: Padding(
-                    padding: EdgeInsets.all(5), child: Text('\$$price')),
+              child: Padding(
+                padding: EdgeInsets.all(5),
+                child: FittedBox(
+                  child: Text('\$$price'),
+                ),
               ),
             ),
             title: Text(title),
-            subtitle: Text(
-              'Total: \$${price * quantity}',
-            ),
-            trailing: Text('${quantity}x'),
+            subtitle: Text('Total: \$${(price * quantity)}'),
+            trailing: Text('$quantity x'),
           ),
         ),
       ),

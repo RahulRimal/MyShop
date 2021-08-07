@@ -5,7 +5,7 @@ import '../providers/product.dart';
 import '../providers/products.dart';
 
 class EditProductScreen extends StatefulWidget {
-  static const routeName = '/edit-product';
+  static const routName = '/edit-product';
 
   @override
   _EditProductScreenState createState() => _EditProductScreenState();
@@ -115,18 +115,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 ],
               ),
         );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.of(context).pop();
       }
-      // finally {
-      //   setState(() {
-      //     _isLoading = false;
-      //   });
-      //   Navigator.of(context).pop();
-      // }
     }
     setState(() {
-      _isLoading = false;
-    });
-    Navigator.of(context).pop();
+        _isLoading = false;
+      });
+      Navigator.of(context).pop();
     // Navigator.of(context).pop();
   }
 
